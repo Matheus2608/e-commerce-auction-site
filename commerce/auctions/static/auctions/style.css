@@ -1,0 +1,164 @@
+nav{
+    background-color: #000a15;
+    color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+nav h1{
+    display: inline-block;
+    margin-right: 20px;
+}
+
+nav a{
+    position: relative;
+    bottom: 7px;
+    display: inline-block;
+    margin-right: 40px;
+    text-decoration: none;
+    color: white;
+}
+nav ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+nav ul li{
+    display: inline-block;
+}
+
+nav > ul > li:last-child{
+    float: right;
+    padding: 20px 50px 0 0;
+}
+
+nav li ul {
+    position: absolute;
+    display: none;
+    width: inherit;
+}
+
+nav li:hover ul {
+   display: block;
+}
+
+nav div li{
+    display: block;
+    background-color: #000a15;
+    /* border-bottom: 1px solid white; */
+    padding: 8px 0;
+}
+
+nav div li:first-child{
+    padding-top: 18%;
+}
+nav div li:last-child{
+    border: none;
+}
+
+#notnav{
+    margin-top: 6%;
+}
+
+#listings{
+    margin: 0 7%;
+}
+
+figure{
+    margin: 2% 0;
+    text-align: center;
+    text-transform: uppercase;
+    width: 23%;
+    display: inline-block;
+    border: 1px solid white;
+    box-shadow: gray 0 0 10px;
+    border-radius: 2%;
+}
+
+figure h1{
+    font-size: 15px;
+    text-align: right;
+    margin-top: 12px;    
+}
+
+figcaption h1{
+    text-align: center;
+}
+
+figure img {
+    width: 100%;
+    height: 215px;
+}
+
+figure a{
+    text-decoration: none;
+    color: black;
+}
+
+figcaption{
+    height: 20px
+}
+
+/* listing.html css -------------------------------------------------------- */
+
+.listing{
+    margin: 0 9%;
+    padding: 0;
+}
+.left{
+    padding: 0;
+    margin: 0;
+}
+.left figure{
+    margin: 0;
+    width: 100%;
+    height: 500px;
+}
+.left figure img{
+    height: 100%;
+}
+.right h1{
+    font-size: 140%;
+    display: inline-block;
+}
+
+#buttonright{
+    float: right;
+}
+.bid{
+    background-color: #ececec;
+    box-shadow: 2px 3px 5px 1px #dadada;
+}
+.bid h2{
+    font-size: 100%;
+}
+.bid > h2{
+    float: left;
+}
+
+.bid .right{
+    display: inline-block;
+    margin-left: 10%;
+}
+
+.bid .right h2{
+    font-weight: bold;
+}
+
+.bid .right h3{
+    font-size: 90%;
+    opacity: 80%;
+}
+
+#watchlistButton{
+    width: 100%;
+}
+
+table{
+    margin-top: 1%;
+}
+
+.comments{
+    margin-top: 3%;
+    width: 100%;
+}

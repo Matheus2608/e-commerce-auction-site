@@ -1,0 +1,42 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <form action="{% url 'create' %}" method="post">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Title</span>
+            </div>
+            <input type="text" class="form-control" name="title" aria-label="Username" aria-describedby="basic-addon1">
+        </div>
+        <label for="category">Chosse a category:</label>
+        <select name="category" id="category">
+          <option value="Jewerly">Jewerly</option>
+          <option value="Gamer">Gamer</option>
+          <option value="Technology">Technology</option>
+          <option value="Book">Book</option>
+          <option value="Itens">Itens</option>
+        </select>
+        <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Description</span>
+            </div>
+            <textarea class="form-control" name="description" aria-label="With textarea"></textarea>
+        </div>
+        <br>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">$</span>
+            </div>
+            <input type="text" class="form-control" name="starting_bid" aria-label="Username" aria-describedby="basic-addon1" id="basic-url" placeholder="Starting Bid">
+        </div>
+        <label for="basic-url">Image URL</label>
+        <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3">https://example.com/</span>
+        </div>
+        <input type="text" class="form-control" name="url" id="basic-url" aria-describedby="basic-addon3">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}
