@@ -1,6 +1,7 @@
 # e-commerce-auction-site
- An eBay-like e-commerce auction site that will allow users to post auction listings, place bids on listings, comment on those listings, and add listings to a watchlist.
+ This repository is my solution to [Commerce project](https://cs50.harvard.edu/web/2020/projects/2/commerce/) of [CS50’s Web Programming with Python and JavaScript](https://www.edx.org/course/cs50s-web-programming-with-python-and-javascript?index=product&queryID=eaf2bb22ce7990e7889c0422ebcde64a&position=1) course by Harvard.
 
+![This is an image](/Mafiaewsite.png)
 ## 🚀 How to execute:
 - Clone the repository using git clone
 - Install the dependencies (Django)
