@@ -1,7 +1,7 @@
 # e-commerce-auction-site
  This repository is my solution to [Commerce project](https://cs50.harvard.edu/web/2020/projects/2/commerce/) of [CS50’s Web Programming with Python and JavaScript](https://www.edx.org/course/cs50s-web-programming-with-python-and-javascript?index=product&queryID=eaf2bb22ce7990e7889c0422ebcde64a&position=1) course by Harvard.
 
-![This is an image](/Mafiaewsite.png)
+![This is an image](/Mafiawesite.png)
 ## 🚀 How to execute:
 - Clone the repository using git clone
 - Install the dependencies (Django)
