@@ -1,8 +1,8 @@
 nav{
     background-color: #000a15;
     color: white;
-    position: fixed;
-    top: 0;
+    /* position: fixed;
+    top: 0; */
     width: 100%;
 }
 nav h1{
@@ -161,4 +161,9 @@ table{
 .comments{
     margin-top: 3%;
     width: 100%;
+}
+
+#comment{
+    padding-left: 15px;
+    margin-bottom: 8px;
 }

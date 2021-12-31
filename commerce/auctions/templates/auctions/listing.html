@@ -87,6 +87,7 @@
                 </tbody>
               </table>
         </div>
+        <!-- Comments -->
         <div class="comments">
         {% if user.is_authenticated %}
         <form action="{% url 'listing' item.id %}" method="post">
@@ -103,15 +104,10 @@
         </div>
         {% endif %}
         {% for comment in comments %}
-            <div class="row d-flex justify-content-left">
-                <div class="col-md-8">
-                    <div class="card p-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="user d-flex flex-row align-items-center"> <span><small class="font-weight-bold text-primary">{{comment.username.username}}</small> <small class="font-weight-bold">{{comment.comment}}</small></span> </div> <small></small>
-                        </div>
-                    </div>
-                        <div class="action d-flex justify-content-between mt-2 align-items-center">                
-                        </div>
+            <div class="row d-flex justify-content-left" id="comment">
+                <div class="card p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="user d-flex flex-row align-items-center"> <span><small class="font-weight-bold text-primary">{{comment.username.username}}</small> <small class="font-weight-bold">{{comment.comment}}</small></span> </div> <small></small>
                     </div>
                 </div>
             </div>
