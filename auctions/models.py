@@ -11,7 +11,7 @@ class User(AbstractUser):
 class Listings(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listings")
-    title = models.CharField(max_length=20)
+    title = models.CharField()
     description = models.TextField()
     url = models.TextField()
     category = models.CharField(max_length=20)
