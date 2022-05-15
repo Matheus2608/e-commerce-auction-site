@@ -3,6 +3,7 @@
 
 ![This is an image](/Mafiawesite.png)
 ## 🚀 How to execute:
+- Check my [website](https://mafiawe.herokuapp.com/) or run it loccaly doing the following steps:
 - Clone the repository using git clone
 - Install the dependencies (Django)
 - Change to commerce directory using ```cd commerce```
