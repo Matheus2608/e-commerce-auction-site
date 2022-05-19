@@ -1,14 +1,14 @@
 {% extends "auctions/layout.html" %}
 {% block body %}
     <div id="listings">
-        {% for listing in listings %}
+        {% for counter in number_listings %}
             <figure>
-                <a href="{% url 'listing' listing.id %}">
-                    <img src="{{ listing.url}} " alt=" {{ listing.title }}">
+                <a href="{% url 'listing' listings.counter.id %}">
+                    <img src="{{ listing.counter.url}} " alt=" {{ listing.counter.title }}">
                     <figcaption>
-                        <h1>{{ listing.title}}</h1>
+                        <h1>{{ listing.counter.title}}</h1>
                     </figcaption>
-                    <h1>${{ listing.starting_bid}}</h1>
+                    <h1>${{ bids.counter }}</h1>
                 </a>
             </figure>
         </a>

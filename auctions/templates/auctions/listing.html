@@ -8,16 +8,16 @@
             <div class="col-md-6 left">
                 <!-- First Column -->
                 <figure>
-                    <img src="{{ item.url}} " alt=" {{ item.title }} ">
+                    <img src="{{ current_listing.url}} " alt=" {{ current_listing.title }} ">
                 </figure>
             </div>
             <div class="col-md-6 right">
                 <!-- First Column -->
-                <h1>Listing: {{ item.title }}</h1>
+                <h1>Listing: {{ current_listing.title }}</h1>
                 <div id="buttonright">
-                <form action="{% url 'listing' item.id %}" method="post">
+                <form action="{% url 'listing' current_listing.id %}" method="post">
                     {% csrf_token %}
-                    {% if user == item.user %}
+                    {% if user == current_listing.user %}
                     <button type="submit" class="btn btn-warning" name="close">Close listing</button>
                     {% endif %}
                 </form>
@@ -26,15 +26,10 @@
                 <div class="bid">
                     <h2>Current Bid:</h2>
                         <div class="right">
-                        {% if lenght_bids == 0 %}
-                        <h2>USD {{ item.starting_bid }}</h2>
-                        <h3>Enter USD {{ item.starting_bid }} or more</h3>
-                        {% else %}
-                        <h2>USD {{ last_bid.bid }}</h2>
-                        <h3>Enter USD {{last_bid.bid}} or more</h3>
-                        {% endif %}
+                        <h2>USD {{ last_bid.value }}</h2>
+                        <h3>Enter USD {{last_bid.value} or more</h3>
                         {% if user.is_authenticated %}
-                        <form action="{% url 'listing' item.id %}" method="post">
+                        <form action="{% url 'listing' current_listing.id %}" method="post">
                             {% csrf_token %}
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
@@ -70,19 +65,19 @@
                 <tbody>
                   <tr>
                     <th scope="row">Category</th>
-                    <td>{{item.category}}</td>
+                    <td>{{current_listing.category}}</td>
                   </tr>
                   <tr>
                     <th scope="row">Start Price</th>
-                    <td>${{item.starting_bid}}</td>
+                    <td>${{start_bid}}</td>
                   </tr>
                   <tr>
                     <th scope="row">Description</th>
-                    <td>{{item.description}}</td>
+                    <td>{{current_listing.description}}</td>
                   </tr>
                   <tr>
                       <th scope="row">Who created</th>
-                      <td>{{item.user.username}}</td>
+                      <td>{{current_listing.user.username}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -90,7 +85,7 @@
         <!-- Comments -->
         <div class="comments">
         {% if user.is_authenticated %}
-        <form action="{% url 'listing' item.id %}" method="post">
+        <form action="{% url 'listing' current_listing.id %}" method="post">
             {% csrf_token %}
             <div class="form-group" style="margin-bottom: 0;">
                 <label for="exampleFormControlTextarea1"></label>
@@ -106,8 +101,8 @@
         {% for comment in comments %}
             <div class="row d-flex justify-content-left" id="comment">
                 <div class="card p-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="user d-flex flex-row align-items-center"> <span><small class="font-weight-bold text-primary">{{comment.username.username}}</small> <small class="font-weight-bold">{{comment.comment}}</small></span> </div> <small></small>
+                    <div class="d-flex justify-content-between align-current_listings-center">
+                        <div class="user d-flex flex-row align-current_listings-center"> <span><small class="font-weight-bold text-primary">{{comment.username.username}}</small> <small class="font-weight-bold">{{comment.comment}}</small></span> </div> <small></small>
                     </div>
                 </div>
             </div>

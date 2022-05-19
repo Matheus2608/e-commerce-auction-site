@@ -3,12 +3,19 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import Bids, Comments, Listings, User, Watch
+from .models import Bid, Comment, Listing, User, Watch
 
 
 def index(request):
+    listings = Listing.objects.all()
+    bids = []
+    for listing in listings:
+        bids.append(Bid.objects.filter(listing=listing).last())
+
     return render(request, "auctions/index.html", {
-        "listings": Listings.objects.all()
+        "number_listings": range(len(listings)),
+        "listings": listings,
+        "bids": bids
     })
 
 
@@ -69,63 +76,64 @@ def create(request):
         title = request.POST["title"]
         category = request.POST["category"]
         description = request.POST["description"]
-        starting_bid = request.POST["starting_bid"]
+        starting_bid = float(request.POST["starting_bid"].replace(",", "."))
         url = request.POST["url"]
-        l = Listings(user=request.user, title=title, description=description, url=url,
-                     category=category, starting_bid=starting_bid)
+        l = Listing(user=request.user, title=title, description=description, url=url,
+                     category=category, bid=starting_bid)
         l.save()
-        return render(request, "auctions/index.html", {
-            "listings": Listings.objects.all()
-        })
+        b = Bid(user=request.user, value=starting_bid, listing=l)
+        b.save()
+        return HttpResponseRedirect(reverse("index"))
+        #return render(request, "auctions/index.html", {
+        #    "listings": Listings.objects.all()
+        #})
     return render(request, "auctions/create.html")
 
 
 def listing(request, id):
-    item = Listings.objects.get(id=id)
+    current_listing = Listing.objects.get(id=id)
     user = request.user
     user = None if not user.is_authenticated else user
     message = False
-    watch_list_user = Watch.objects.filter(user=user, listing=item)
-    bids = Bids.objects.filter(listing=item)
-    last_bid = bids.last()
+    watch_list_user = Watch.objects.filter(user=user, listing=current_listing)
+    comments = Comment.objects.filter(listing=current_listing)
+    bids = Bid.objects.filter(listing=current_listing)
+    start_bid, last_bid = bids.first(), bids.last()
     if request.method == "POST":
         if "bid" in request.POST:
-            bid_value = request.POST["bid"]
-            if last_bid is None:
-                if float(bid_value) > float(item.starting_bid):
-                    bid = Bids(user=user, bid=bid_value, listing=item)
-                    bid.save()
-                    message = False
-                else:
-                    message = True
-            elif float(bid_value) > float(last_bid.bid):
-                bid = Bids(user=user, bid=bid_value, listing=item)
+            bid_value = float(request.POST["bid"].replace(",", "."))
+            # if last_bid is None:
+            #     if float(bid_value) > float(current_listing.starting_bid):
+            #         bid = Bid(user=user, bid=bid_value, listing=current_listing)
+            #         bid.save()
+            #         message = False
+            #     else:
+            #         message = True
+            if float(bid_value) > last_bid.value:
+                bid = Bid(user=user, value=bid_value, listing=current_listing)
                 bid.save()
+                last_bid = bid
                 message = False
             else:
                 message = True
         if "comment" in request.POST:
             comment = request.POST["comment"]
-            c = Comments(username=user, comment=comment, listing=item)
+            c = Comment(username=user, comment=comment, listing=current_listing)
             c.save()
         if "watchlist" in request.POST:
-            w = Watch(listing=item, user=user)
+            w = Watch(listing=current_listing, user=user)
             w.save()
         if "remove_watchlist" in request.POST:
             watch_list_user.first().delete()
         if "close" in request.POST:
-            item.delete()
+            current_listing.delete()
             return HttpResponseRedirect(reverse("index"))
-    bids = Bids.objects.filter(listing=item)
-    last_bid = bids.last()
-    lenght_bids = len(bids)
-    comments = Comments.objects.filter(listing=item)
-    if len(watch_list_user) == 1:
-        on_watch_list = True
-    else:
-        on_watch_list = False
+
+    lenght_bids = len(bids) + 1
+    on_watch_list = True if len(watch_list_user) == 1 else False
+    
     return render(request, "auctions/listing.html", {
-        "item": item,
+        "current_listing": current_listing,
         "bids": bids,
         "last_bid": last_bid,
         "comments": comments,
@@ -133,6 +141,7 @@ def listing(request, id):
         "on_watch_list": on_watch_list,
         "message": message,
         "lenght_bids": lenght_bids,
+        "start_bid": start_bid,
     })
 
 
@@ -144,7 +153,7 @@ def watchlist(request):
 
 
 def categories(request, category):
-    listings = Listings.objects.filter(category=category)
+    listings = Listing.objects.filter(category=category)
     return render(request, "auctions/index.html", {
         "listings": listings
     })

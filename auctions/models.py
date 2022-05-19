@@ -8,44 +8,43 @@ class User(AbstractUser):
         return f"{self.username}"
 
 
-class Listings(models.Model):
+class Listing(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listings")
-    title = models.CharField()
+    title = models.CharField(max_length=35)
     description = models.TextField()
     url = models.TextField()
     category = models.CharField(max_length=20)
-    starting_bid = models.CharField(max_length=20)
 
     def __str__(self) -> str:
-        return f"user:{self.user}; title:{self.title}; description:{self.description}; category:{self.category}; starting_bid:{self.starting_bid}"
+        return f"user:{self.user}; title:{self.title}; description:{self.description}; category:{self.category};"
 
 
-class Comments(models.Model):
+class Comment(models.Model):
     username = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="comments")
     comment = models.TextField()
     listing = models.ForeignKey(
-        Listings, on_delete=models.CASCADE, related_name="comments")
+        Listing, on_delete=models.CASCADE, related_name="comments")
 
     def __str__(self) -> str:
         return f"{self.username}: ({self.comment})"
 
 
-class Bids(models.Model):
+class Bid(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="bids")
-    bid = models.CharField(max_length=10)
+    value = models.FloatField()
     listing = models.ForeignKey(
-        Listings, on_delete=models.CASCADE, related_name="listings")
+        Listing, on_delete=models.CASCADE, related_name="bids")
 
     def __str__(self) -> str:
-        return f"{self.user}: ({self.bid}); listing:{self.listing} "
+        return f"{self.user}: ({self.value}); listing:{self.listing}"
 
 
 class Watch(models.Model):
     listing = models.ForeignKey(
-        Listings, on_delete=models.CASCADE, related_name="watch_list")
+        Listing, on_delete=models.CASCADE, related_name="watch_list")
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="watch_list")
 
