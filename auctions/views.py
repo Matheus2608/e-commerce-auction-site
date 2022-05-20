@@ -4,30 +4,30 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .models import Bid, Comment, Listing, User, Watch
+from django.forms.models import model_to_dict
 
-#closed_listings = []
 
 def index(request):
     listings = Listing.objects.all()
     bids = []
-    condition = False
+    message = False
     user = request.user
     for listing in listings:
         bids.append(Bid.objects.filter(listing=listing).last())
-
-    # for closed in closed_listings:
-    #     if user == closed.user:
-    #         condition = True
-    #         message = f"You Won the Auction for {closed.listing.title}, now you just need to pay and {closed.listing.user.username} will send you your purchase"
-    #     break
-
-    # message = closed_listings
-    # condition = True
+    
+    if "closed_listings" not in request.session:
+        request.session["closed_listings"] = []
+    else:
+        for closed in request.session["closed_listings"]:
+            if user.id == closed["user"]:
+                title = closed["title"]
+                message = f"You Won the Auction for {title}, now you just need to pay and {user.username} will send you your purchase"
+            break
+    print(request.session["closed_listings"])
     return render(request, "auctions/index.html", {
         "listings": listings,
         "bids": bids,
-        # "message":  message,
-        # "condition": condition,
+        "message":  message,
     })
 
 
@@ -128,7 +128,10 @@ def listing(request, id):
         if "remove_watchlist" in request.POST:
             watch_list_user.first().delete()
         if "close" in request.POST:
-            # closed_listings.append(last_bid)
+            title = last_bid.listing.title
+            last_bid = model_to_dict(last_bid)
+            last_bid["title"] = title
+            request.session["closed_listings"] += [last_bid]
             current_listing.delete()
             return HttpResponseRedirect(reverse("index"))
 

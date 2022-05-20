@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models.deletion import CASCADE
+import json
 
 
 class User(AbstractUser):
@@ -37,7 +38,7 @@ class Bid(models.Model):
     value = models.FloatField()
     listing = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name="bids")
-
+        
     def __str__(self) -> str:
         return f"{self.user}: ({self.value}); listing:{self.listing}"
 
