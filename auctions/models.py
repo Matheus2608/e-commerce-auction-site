@@ -38,10 +38,15 @@ class Bid(models.Model):
     value = models.FloatField()
     listing = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name="bids")
-        
+
     def __str__(self) -> str:
         return f"{self.user}: ({self.value}); listing:{self.listing}"
 
+class Closed_listing(models.Model):
+    listing = models.ForeignKey(Listing, on_delete=models.PROTECT, related_name="closed_listings")
+
+    def __str__(self) -> str:
+        return f"{self.listing}"
 
 class Watch(models.Model):
     listing = models.ForeignKey(

@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import Bid, Comment, Listing, User, Watch
+from .models import Bid, Comment, Listing, User, Watch, Closed_listing
 from django.forms.models import model_to_dict
 
 
@@ -15,15 +15,13 @@ def index(request):
     for listing in listings:
         bids.append(Bid.objects.filter(listing=listing).last())
     
-    if "closed_listings" not in request.session:
-        request.session["closed_listings"] = []
-    else:
-        for closed in request.session["closed_listings"]:
-            if user.id == closed["user"]:
-                title = closed["title"]
-                message = f"You Won the Auction for {title}, now you just need to pay and {user.username} will send you your purchase"
-            break
-    print(request.session["closed_listings"])
+    closed_listings = Closed_listing.objects.all()
+    for closed_listing in closed_listings:
+        last_bid = Bid.objects.filter(listing=closed_listing.listing).last()
+        if last_bid.user == user:
+            message = f"You Won the Auction for {last_bid.listing.title}, now you just need to pay and {last_bid.listing.user.username} will send you your purchase"
+        break
+
     return render(request, "auctions/index.html", {
         "listings": listings,
         "bids": bids,
@@ -128,10 +126,8 @@ def listing(request, id):
         if "remove_watchlist" in request.POST:
             watch_list_user.first().delete()
         if "close" in request.POST:
-            title = last_bid.listing.title
-            last_bid = model_to_dict(last_bid)
-            last_bid["title"] = title
-            request.session["closed_listings"] += [last_bid]
+            closed_listing = Closed_listing(listing=current_listing)
+            closed_listing.save()
             current_listing.delete()
             return HttpResponseRedirect(reverse("index"))
 
