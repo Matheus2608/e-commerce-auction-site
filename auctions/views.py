@@ -5,16 +5,29 @@ from django.shortcuts import render
 from django.urls import reverse
 from .models import Bid, Comment, Listing, User, Watch
 
+#closed_listings = []
 
 def index(request):
     listings = Listing.objects.all()
     bids = []
+    condition = False
+    user = request.user
     for listing in listings:
         bids.append(Bid.objects.filter(listing=listing).last())
 
+    # for closed in closed_listings:
+    #     if user == closed.user:
+    #         condition = True
+    #         message = f"You Won the Auction for {closed.listing.title}, now you just need to pay and {closed.listing.user.username} will send you your purchase"
+    #     break
+
+    # message = closed_listings
+    # condition = True
     return render(request, "auctions/index.html", {
         "listings": listings,
-        "bids": bids
+        "bids": bids,
+        # "message":  message,
+        # "condition": condition,
     })
 
 
@@ -115,10 +128,10 @@ def listing(request, id):
         if "remove_watchlist" in request.POST:
             watch_list_user.first().delete()
         if "close" in request.POST:
+            # closed_listings.append(last_bid)
             current_listing.delete()
             return HttpResponseRedirect(reverse("index"))
 
-    lenght_bids = len(bids) + 1
     on_watch_list = True if len(watch_list_user) == 1 else False
     
     return render(request, "auctions/listing.html", {
@@ -129,7 +142,6 @@ def listing(request, id):
         "user": user,
         "on_watch_list": on_watch_list,
         "message": message,
-        #"lenght_bids": lenght_bids,
         "start_bid": start_bid,
     })
 

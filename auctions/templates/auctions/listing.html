@@ -10,6 +10,14 @@
                 <figure>
                     <img src="{{ current_listing.url}} " alt=" {{ current_listing.title }} ">
                 </figure>
+                <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <th scope="row">Last user to offer a bid</th>
+                        <td>{{last_bid.user.username}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
             </div>
             <div class="col-md-6 right">
                 <!-- First Column -->
