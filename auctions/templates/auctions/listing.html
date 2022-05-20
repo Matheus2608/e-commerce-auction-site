@@ -27,7 +27,7 @@
                     <h2>Current Bid:</h2>
                         <div class="right">
                         <h2>USD {{ last_bid.value }}</h2>
-                        <h3>Enter USD {{last_bid.value} or more</h3>
+                        <h3>Enter USD {{ last_bid.value}} or more</h3>
                         {% if user.is_authenticated %}
                         <form action="{% url 'listing' current_listing.id %}" method="post">
                             {% csrf_token %}
@@ -69,7 +69,7 @@
                   </tr>
                   <tr>
                     <th scope="row">Start Price</th>
-                    <td>${{start_bid}}</td>
+                    <td>${{ start_bid.value }}</td>
                   </tr>
                   <tr>
                     <th scope="row">Description</th>

@@ -13,7 +13,6 @@ def index(request):
         bids.append(Bid.objects.filter(listing=listing).last())
 
     return render(request, "auctions/index.html", {
-        "number_listings": range(len(listings)),
         "listings": listings,
         "bids": bids
     })
@@ -79,14 +78,11 @@ def create(request):
         starting_bid = float(request.POST["starting_bid"].replace(",", "."))
         url = request.POST["url"]
         l = Listing(user=request.user, title=title, description=description, url=url,
-                     category=category, bid=starting_bid)
+                     category=category)
         l.save()
         b = Bid(user=request.user, value=starting_bid, listing=l)
         b.save()
         return HttpResponseRedirect(reverse("index"))
-        #return render(request, "auctions/index.html", {
-        #    "listings": Listings.objects.all()
-        #})
     return render(request, "auctions/create.html")
 
 
@@ -102,13 +98,6 @@ def listing(request, id):
     if request.method == "POST":
         if "bid" in request.POST:
             bid_value = float(request.POST["bid"].replace(",", "."))
-            # if last_bid is None:
-            #     if float(bid_value) > float(current_listing.starting_bid):
-            #         bid = Bid(user=user, bid=bid_value, listing=current_listing)
-            #         bid.save()
-            #         message = False
-            #     else:
-            #         message = True
             if float(bid_value) > last_bid.value:
                 bid = Bid(user=user, value=bid_value, listing=current_listing)
                 bid.save()
@@ -140,7 +129,7 @@ def listing(request, id):
         "user": user,
         "on_watch_list": on_watch_list,
         "message": message,
-        "lenght_bids": lenght_bids,
+        #"lenght_bids": lenght_bids,
         "start_bid": start_bid,
     })
 
