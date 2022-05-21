@@ -15,11 +15,11 @@ def index(request):
     for listing in listings:
         bids.append(Bid.objects.filter(listing=listing).last())
     
+    # See if this user won an auction
     closed_listings = Closed_listing.objects.all()
     for closed_listing in closed_listings:
-        last_bid = Bid.objects.filter(listing=closed_listing.listing).last()
-        if last_bid.user == user:
-            message = f"You Won the Auction for {last_bid.listing.title}, now you just need to pay and {last_bid.listing.user.username} will send you your purchase"
+        if closed_listing.last_bid_user == user.username:
+            message = f"You Won the Auction for {(closed_listing.title).capitalize()}, now you just need to pay USD {closed_listing.value} and {closed_listing.user_who_created} will send you your purchase!"
         break
 
     return render(request, "auctions/index.html", {
@@ -126,7 +126,8 @@ def listing(request, id):
         if "remove_watchlist" in request.POST:
             watch_list_user.first().delete()
         if "close" in request.POST:
-            closed_listing = Closed_listing(listing=current_listing)
+            last_bid = Bid.objects.filter(listing=current_listing).last()
+            closed_listing = Closed_listing(user_who_created=current_listing.user.username, last_bid_user=last_bid.user.username, title=current_listing.title, value=last_bid.value)
             closed_listing.save()
             current_listing.delete()
             return HttpResponseRedirect(reverse("index"))

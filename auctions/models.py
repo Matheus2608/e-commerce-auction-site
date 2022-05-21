@@ -43,10 +43,13 @@ class Bid(models.Model):
         return f"{self.user}: ({self.value}); listing:{self.listing}"
 
 class Closed_listing(models.Model):
-    listing = models.ForeignKey(Listing, on_delete=models.PROTECT, related_name="closed_listings")
+    user_who_created = models.CharField(max_length=35)
+    last_bid_user = models.CharField(max_length=35)
+    title = models.CharField(max_length=35)
+    value = models.FloatField()
 
     def __str__(self) -> str:
-        return f"{self.listing}"
+        return f"user_who_created: {self.user_who_created}; last_bid_user: {self.last_bid_user}; title: {self.title}; value: {self.value}"
 
 class Watch(models.Model):
     listing = models.ForeignKey(
