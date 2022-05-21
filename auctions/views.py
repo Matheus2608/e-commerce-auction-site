@@ -4,7 +4,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .models import Bid, Comment, Listing, User, Watch, Closed_listing
-from django.forms.models import model_to_dict
 
 
 def index(request):
@@ -20,6 +19,7 @@ def index(request):
     for closed_listing in closed_listings:
         if closed_listing.last_bid_user == user.username:
             message = f"You Won the Auction for {(closed_listing.title).capitalize()}, now you just need to pay USD {closed_listing.value} and {closed_listing.user_who_created} will send you your purchase!"
+            closed_listing.delete()        
         break
 
     return render(request, "auctions/index.html", {

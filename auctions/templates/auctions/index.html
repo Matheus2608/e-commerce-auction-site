@@ -1,7 +1,7 @@
 {% extends "auctions/layout.html" %}
 {% block body %}
     {% if message %}
-    <h3><marquee> {{ message }}</marquee></h3>
+    <h3 style="color: red;"><marquee> {{ message }}</marquee></h3>
     {% endif %}
     <div id="listings"></div>
         {% for listing in listings %}
