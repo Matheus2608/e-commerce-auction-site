@@ -3,7 +3,7 @@
     {% if message %}
     <h3 style="color: red;"><marquee> {{ message }}</marquee></h3>
     {% endif %}
-    <div id="listings"></div>
+    <div id="listings">
         {% for bid in bids %}
             <figure>
                 <a href="{% url 'listing' bid.listing.id %}">
