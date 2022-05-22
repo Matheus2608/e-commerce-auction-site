@@ -37,6 +37,11 @@
             </div>
             <input type="text" class="form-control" name="starting_bid" aria-label="Username" aria-describedby="basic-addon1" id="basic-url" placeholder="Starting Bid">
         </div>
+        {% if alert %}
+        <div class="alert alert-danger" role="alert">
+          Please insert a decimal number.
+        </div>
+        {% endif %}
         <label for="basic-url">Image URL</label>
         <div class="input-group mb-3">
         <div class="input-group-prepend">

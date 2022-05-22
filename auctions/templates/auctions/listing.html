@@ -36,7 +36,11 @@
                         <div class="right">
                         <h2>USD {{ last_bid.value }}</h2>
                         <h3>Enter USD {{ last_bid.value}} or more</h3>
-                        {% if user.is_authenticated %}
+                        {% if user == current_listing.user %}
+                        <div class="alert alert-danger" role="alert">
+                            You can't bid on your own listing.
+                        </div>
+                        {% elif user.is_authenticated %}
                         <form action="{% url 'listing' current_listing.id %}" method="post">
                             {% csrf_token %}
                             <div class="input-group mb-3">
@@ -45,12 +49,13 @@
                                 </div>
                                 <input type="text" class="form-control" name="bid" aria-label="Username" aria-describedby="basic-addon1" id="basic-url" placeholder="Place your bid">
                             </div>
-                        </form> 
+                        </form>
                         {% else %}
                         <div class="alert alert-danger" role="alert">
                             Please Login to place your bid
                         </div>
                         {% endif %}
+                        
                 </div>
                 <div class="col p-0">
                     <form method="POST" id="watchlist">

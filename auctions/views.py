@@ -82,11 +82,18 @@ def register(request):
 
 
 def create(request):
+    alert = False
     if request.method == "POST":
         title = request.POST["title"]
         category = request.POST["category"]
         description = request.POST["description"]
-        starting_bid = float(request.POST["starting_bid"].replace(",", "."))
+        try:
+            starting_bid = float(request.POST["starting_bid"].replace(",", "."))
+        except:
+            alert = True
+            return render(request, "auctions/create.html",{
+        "alert": alert,
+    })
         url = request.POST["url"]
         l = Listing(user=request.user, title=title, description=description, url=url,
                      category=category)
@@ -94,7 +101,9 @@ def create(request):
         b = Bid(user=request.user, value=starting_bid, listing=l)
         b.save()
         return HttpResponseRedirect(reverse("index"))
-    return render(request, "auctions/create.html")
+    return render(request, "auctions/create.html",{
+        "alert": alert,
+    })
 
 
 def listing(request, id):

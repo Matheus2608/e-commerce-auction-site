@@ -4,13 +4,12 @@
     <h3 style="color: red;"><marquee> {{ message }}</marquee></h3>
     {% endif %}
     <div id="listings"></div>
-        {% for listing in listings %}
         {% for bid in bids %}
             <figure>
-                <a href="{% url 'listing' listing.id %}">
-                    <img src="{{ listing.url}} " alt=" {{ listing.title }}">
+                <a href="{% url 'listing' bid.listing.id %}">
+                    <img src="{{ bid.listing.url}} " alt=" {{ bid.listing.title }}">
                     <figcaption>
-                        <h1>{{ listing.title}}</h1>
+                        <h1>{{ bid.listing.title}}</h1>
                     </figcaption>
                     <h1>${{ bid.value }}</h1>
                 </a>
@@ -18,7 +17,6 @@
         </a>
         {% empty %}
         <h1>No listings</h1>
-        {% endfor %}
         {% endfor %}
     </div>
 {% endblock %}
